@@ -2,8 +2,12 @@ from django.core.management.base import BaseCommand
 import requests
 from django.conf import settings
 import telebot
+from PIL import Image, ImageEnhance, ImageOps
+from string import Template
 
+import knots3d.settings
 from bot.models import alleknotentabelle
+
 
 encode = {
     'camping': {
@@ -398,6 +402,66 @@ encode = {
     },
 }
 
+language = {
+    'eng': {
+        'view': Template('Full list:\nAll knots $all\n\nCategory:\n$category'),
+        'view_category': Template('$category_name\n\n$knots'),
+        'knot': Template('$knot_name\n\nDescription:\n$description\n\nABOK: $abok\n\nAlso known as: \n$names\n\n'
+                         'Breaking strength: $strength\n\n'
+                         'Categories: \n$categories\n\n'
+                         'More information on: https://knots.exyte.top/knot_id_$id')
+    },
+    'de': {
+        'view': Template('Volle Liste:\nAlle Knoten $all\n\nKategorie:\n$category'),
+        'view_category': Template('$category_name\n\n$knots'),
+        'knot': Template('$knot_name\n\nBeschreibung:\n$description\n\nABOK: $abok\n\nAuch bekannt als: \n$names\n\n'
+                         'Bruchfestigkeit: $strength\n\n'
+                         'Kategorie: \n$categories\n\n'
+                         'Weitere Informationen zu: https://knots.exyte.top/knot_id_$id')
+    },
+    'ru':{
+        'view': Template('Полный список:\nВсе узлы $all\n\nКатегории:\n$category'),
+        'view_category': Template('$category_name\n\n$knots'),
+        'knot': Template('$knot_name\n\nОписание:\n$description\n\nABOK: $abok\n\nТакже извесно как: \n$names\n\n'
+                         'Прочность на разрыв: $strength\n\n'
+                         'Категории: \n$categories\n\n'
+                         'Чтобы унать больше: https://knots.exyte.top/knot_id_$id')
+    },
+    'esp': {
+        'view': Template('Lista llena:\nTodos los nudos $all\n\nCategoría:\n$category'),
+        'view_category': Template('$category_name\n\n$knots'),
+        'knot': Template('$knot_name\n\nDescripción:\n$description\n\nABOK: $abok\n\nTambién conocido como: \n$names\n\n'
+                         'Rompiendo la fuerza: $strength\n\n'
+                         'Categoría: \n$categories\n\n'
+                         'Más información sobre: https://knots.exyte.top/knot_id_$id')
+    },
+    'fr': {
+        'view': Template('Liste complète:\nTous les nœuds $all\n\nCatégorie:\n$category'),
+        'view_category': Template('$category_name\n\n$knots'),
+        'knot': Template('$knot_name\n\nDescription:\n$description\n\nABOK: $abok\n\nAussi connu sous le nom: \n$names\n\n'
+                         'Résistance à la rupture: $strength\n\n'
+                         'Catégories: \n$categories\n\n'
+                         'Plus d`informations sur: https://knots.exyte.top/knot_id_$id')
+    },
+    'it': {
+        'view': Template('Lista completa:\nTutti i nodi $all\n\nCategoria:\n$category'),
+        'view_category': Template('$category_name\n\n$knots'),
+        'knot': Template('$knot_name\n\nDescrizione:\n$description\n\nABOK: $abok\n\nConosciuto anche come: \n$names\n\n'
+                         'Forza di rottura: $strength\n\n'
+                         'Categoria: \n$categories\n\n'
+                         'Maggiori informazioni su: https://knots.exyte.top/knot_id_$id')
+    },
+    'tuek': {
+        'view': Template('Tam liste:\nTüm düğümler $all\n\nKategori:\n$category'),
+        'view_category': Template('$category_name\n\n$knots'),
+        'knot': Template('$knot_name\n\nAçıklama:\n$description\n\nABOK: $abok\n\nAyrıca şöyle bilinir: \n$names\n\n'
+                         'Kırılma gücü: $strength\n\n'
+                         'Kategori: \n$categories\n\n'
+                         'Hakkında daha fazla bilgi: https://knots.exyte.top/knot_id_$id')
+    },
+    'cur_lang': 'eng'
+}
+
 
 def all_types():
     lst = ['view']
@@ -419,8 +483,18 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         bot = telebot.TeleBot('1592562907:AAGdFFwaQ2f6QotTEuWeYFs3PohgsEHvuiE')
-        keyboard1 = telebot.types.ReplyKeyboardMarkup(True)
-        keyboard1.row('/view')
+        keyboard1 = telebot.types.ReplyKeyboardMarkup(True, True)
+        keyboard1.row('/view', '/language')
+
+        inline_btn_1 = telebot.types.InlineKeyboardButton('English', callback_data='eng')
+        inline_btn_2 = telebot.types.InlineKeyboardButton('Deutish', callback_data='de')
+        inline_btn_3 = telebot.types.InlineKeyboardButton('Русский', callback_data='ru')
+        inline_btn_4 = telebot.types.InlineKeyboardButton('Espaniola', callback_data='esp')
+        inline_btn_5 = telebot.types.InlineKeyboardButton('Francish', callback_data='fr')
+        inline_btn_6 = telebot.types.InlineKeyboardButton('Italiano', callback_data='it')
+        inline_btn_7 = telebot.types.InlineKeyboardButton('Turkish', callback_data='turk')
+        inline_kb1 = telebot.types.InlineKeyboardMarkup().add(inline_btn_1, inline_btn_2, inline_btn_3, inline_btn_4,
+                                                              inline_btn_5, inline_btn_6, inline_btn_7)
 
         @bot.message_handler(commands=['start'])
         def start(message):
@@ -428,7 +502,18 @@ class Command(BaseCommand):
                                               '\n'
                                               'Type /view to see all categories of knots\n'
                                               'Type /view_[category code] to see knots in this category\n'
-                                              'Type /knot_[knot_id] to see info about knot', reply_markup=keyboard1)
+                                              'Type /knot_[knot_id] to see info about knot\n'
+                                              'Type /language to set language', reply_markup=keyboard1)
+
+        @bot.message_handler(commands=['language'])
+        def lang(message):
+            bot.send_message(message.chat.id, "Choose language:", reply_markup=inline_kb1)
+
+        @bot.callback_query_handler(func=lambda c: c.data)
+        def process_callback(callback_query: telebot.types.CallbackQuery):
+            language.update({"cur_lang": callback_query.data})
+            bot.send_message(callback_query.from_user.id, "Language changed", reply_markup=keyboard1)
+            return
 
         @bot.message_handler(commands=all_types())
         def view(message):
@@ -436,17 +521,18 @@ class Command(BaseCommand):
             enter = '\n'
             if len(parsing) == 1:
                 knots = alleknotentabelle.objects.all()
-                bot.send_message(message.chat.id, f'Full list:\n'
-                                                  f'All knots ({len(knots)}) '
-                                                  f'\n'
-                                                  f'\n'
-                                                  f'Category:\n'
-                                                  f'{f"{enter}".join([str(encode[el]["name_eng"] + f" (type /view_{el} - see all knotes in this category)") for el in encode.keys()])}', reply_markup=keyboard1)
+                bot.send_message(message.chat.id, language[language['cur_lang']]['view'].substitute(
+                    all={len(knots)},
+                    category="\n".join([str(encode[el][f"name_{language['cur_lang']}"] + f" (/view_{el})")
+                                       for el in encode.keys()]))
+                                , reply_markup=keyboard1)
             elif parsing[1] == 'all':
                 knots = alleknotentabelle.objects.all()
                 knots_dict = dict()
                 for el in knots:
-                    knots_dict.update({str(el.id): str(' or '.join(i for i in el.knotenname_eng.split('_')))})
+                    knots_dict.update({str(el.id): str(' or '.join(i for i in
+                                                                   eval(f'el.knotenname_'
+                                                                        f'{language["cur_lang"]}').split('_')))})
                 bot.send_message(message.chat.id, f'All:\n\n')
                 for el in knots_dict.keys():
                     bot.send_message(message.chat.id, f'{str(knots_dict[el] + f"(type /knot_{el} - see info about knot)")}')
@@ -454,9 +540,14 @@ class Command(BaseCommand):
                 knots = alleknotentabelle.objects.filter(knoten_typ__startswith=parsing[1])
                 knots_dict = dict()
                 for el in knots:
-                    knots_dict.update({str(el.id): str(' or '.join(i for i in el.knotenname_eng.split('_')))})
-                bot.send_message(message.chat.id, f'{encode[parsing[1]]["name_eng"]}\n\n'
-                                                  f'{f"{enter}".join(str(knots_dict[el] + f"(type /knot_{el} - see info about knot)") for el in knots_dict.keys())}', reply_markup=keyboard1)
+                    knots_dict.update({str(el.id): str(' or '.join(i for i in
+                                                                   eval(f'el.knotenname_'
+                                                                        f'{language["cur_lang"]}').split('_')))})
+                bot.send_message(message.chat.id, language[language['cur_lang']]['view_category'].substitute(
+                    category_name=encode[parsing[1]][f"name_{language['cur_lang']}"],
+                    knots="\n".join(str(knots_dict[el] + f"(/knot_{el})")
+                                      for el in knots_dict.keys())
+                ), reply_markup=keyboard1)
             else:
                 bot.send_message(message.chat.id, "No such category or type")
 
@@ -467,12 +558,20 @@ class Command(BaseCommand):
             if len(parsing) == 2:
                 obj = alleknotentabelle.objects.get(id=int(parsing[1]))
                 categories = [el for el in obj.knoten_typ.split("_")]
-                bot.send_message(message.chat.id, f'{obj.knotenname_eng}\n\n'
-                                                  f'Description:\n{obj.knotenbeschreibung_eng}\n\n'
-                                                  f'ABOK: {obj.knoten_abok}\n\n'
-                                                  f'Also known as: \n{f"{enter}".join([str("--"+el) for el in obj.knotenname_eng.split("_")])}\n\n'
-                                                  f'Breaking strength: {obj.knotenfestigkeit}\n\n'
-                                                  f'Categories: \n{f"{enter}".join([str("--"+encode[el]["name_eng"]) for el in categories])}\n\n'
-                                                  f'More information on: https://knots.exyte.top/knot_id_{int(parsing[1])}', reply_markup=keyboard1)
+                img = Image.open(settings.BASE_DIR / f"images/{obj.knotenbild2d[5:-8]}title.png").convert("RGB")
+                img = ImageOps.invert(img)
+                enhancer = ImageEnhance.Sharpness(img)
+                enhancer = ImageEnhance.Contrast(enhancer.enhance(1.5))
+                enhancer = ImageEnhance.Brightness(enhancer.enhance(1.5))
+                img = enhancer.enhance(0.9)
+                img = img.convert("RGBA")
+                bot.send_photo(message.chat.id, img, caption=language[language['cur_lang']]['knot'].substitute(
+                    knot_name=eval(f'obj.knotenname_{language["cur_lang"]}'),
+                    description=eval(f'obj.knotenbeschreibung_{language["cur_lang"]}'),
+                    abok=obj.knoten_abok,
+                    names="\n".join([str("--"+el) for el in eval(f'obj.knotenname_{language["cur_lang"]}').split("_")]),
+                    strength=obj.knotenfestigkeit,
+                    categories="\n".join([str("--"+encode[el][f"name_{language['cur_lang']}"]) for el in categories]),
+                    id=int(parsing[1])))
 
         bot.polling()
