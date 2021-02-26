@@ -419,7 +419,7 @@ encode = {
 
 language = {
     'eng': {
-        'view': Template('Full list:\nAll knots $all\n\nCategories:'),
+        'view': Template('Full list:\nAll knots $all'),
         'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nDescription:\n$description\n\nABOK: $abok\n\nAlso known as: \n$names\n\n'
                          'Breaking strength: $strength\n\n'
@@ -427,7 +427,7 @@ language = {
                          'More information on: https://knots.exyte.top/knot_id_$id')
     },
     'de': {
-        'view': Template('Volle Liste:\nAlle Knoten $all\n\nKategorie:'),
+        'view': Template('Volle Liste:\nAlle Knoten $all'),
         'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nBeschreibung:\n$description\n\nABOK: $abok\n\nAuch bekannt als: \n$names\n\n'
                          'Bruchfestigkeit: $strength\n\n'
@@ -435,7 +435,7 @@ language = {
                          'Weitere Informationen zu: https://knots.exyte.top/knot_id_$id')
     },
     'ru':{
-        'view': Template('Полный список:\nВсе узлы $all\n\nКатегории:'),
+        'view': Template('Полный список:\nВсе узлы $all'),
         'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nОписание:\n$description\n\nABOK: $abok\n\nТакже извесно как: \n$names\n\n'
                          'Прочность на разрыв: $strength\n\n'
@@ -443,7 +443,7 @@ language = {
                          'Чтобы унать больше: https://knots.exyte.top/knot_id_$id')
     },
     'esp': {
-        'view': Template('Lista llena:\nTodos los nudos $all\n\nCategoría:'),
+        'view': Template('Lista llena:\nTodos los nudos $all'),
         'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nDescripción:\n$description\n\nABOK: $abok\n\nTambién conocido como: \n$names\n\n'
                          'Rompiendo la fuerza: $strength\n\n'
@@ -451,7 +451,7 @@ language = {
                          'Más información sobre: https://knots.exyte.top/knot_id_$id')
     },
     'fr': {
-        'view': Template('Liste complète:\nTous les nœuds $all\n\nCatégories:'),
+        'view': Template('Liste complète:\nTous les nœuds $all'),
         'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nDescription:\n$description\n\nABOK: $abok\n\nAussi connu sous le nom: \n$names\n\n'
                          'Résistance à la rupture: $strength\n\n'
@@ -459,7 +459,7 @@ language = {
                          'Plus d`informations sur: https://knots.exyte.top/knot_id_$id')
     },
     'it': {
-        'view': Template('Lista completa:\nTutti i nodi $all\n\nCategoria:'),
+        'view': Template('Lista completa:\nTutti i nodi $all'),
         'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nDescrizione:\n$description\n\nABOK: $abok\n\nConosciuto anche come: \n$names\n\n'
                          'Forza di rottura: $strength\n\n'
@@ -467,14 +467,15 @@ language = {
                          'Maggiori informazioni su: https://knots.exyte.top/knot_id_$id')
     },
     'tuek': {
-        'view': Template('Tam liste:\nTüm düğümler $all\n\nKategori:'),
+        'view': Template('Tam liste:\nTüm düğümler $all'),
         'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nAçıklama:\n$description\n\nABOK: $abok\n\nAyrıca şöyle bilinir: \n$names\n\n'
                          'Kırılma gücü: $strength\n\n'
                          'Kategori: \n$categories\n\n'
                          'Hakkında daha fazla bilgi: https://knots.exyte.top/knot_id_$id')
     },
-    'cur_lang': 'eng'
+    'cur_lang': 'eng',
+    'stage': 'menu'
 }
 
 
@@ -498,8 +499,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         bot = telebot.TeleBot('1592562907:AAGdFFwaQ2f6QotTEuWeYFs3PohgsEHvuiE')
-        keyboard1 = telebot.types.ReplyKeyboardMarkup(True, True)
-        keyboard1.row('👁️View', '🌍Language')
+        keyboard1 = telebot.types.ReplyKeyboardMarkup(True)
+        keyboard1.row('🔙')
 
         inline_btn_1 = telebot.types.InlineKeyboardButton('English', callback_data='eng')
         inline_btn_2 = telebot.types.InlineKeyboardButton('Deutish', callback_data='de')
@@ -514,27 +515,46 @@ class Command(BaseCommand):
         @bot.message_handler(commands=['start'])
         def start(message):
             knots = alleknotentabelle.objects.all()
-            kb = telebot.types.ReplyKeyboardMarkup()
-            buf1 = None
-            buf2 = None
-            fl = 0
-            kb.row('📚All')
-            for el in encode.keys():
-                kb_button = telebot.types.KeyboardButton(
-                    encode[el]['img'] + encode[el][f'name_{language["cur_lang"]}'])
-                if buf1 is not None and buf2 is not None:
-                    if fl == 2:
-                        kb.row(kb_button, buf1, buf2)
-                        fl = 0
-                        buf2 = buf1
-                        buf1 = kb_button
-                        continue
-                buf2 = buf1
-                buf1 = kb_button
-                fl += 1
-            kb.row('⭐Favorite', '🌍Language')
+            kb = telebot.types.InlineKeyboardMarkup()
+            buf = None
+            img_buf = None
+            fl = True
+            language['stage'] = 'menu'
+            kb.row(telebot.types.InlineKeyboardButton('📚All', callback_data='all'))
+            kb.row(telebot.types.InlineKeyboardButton('⭐Favorite', callback_data='favorite'),
+                   telebot.types.InlineKeyboardButton('🌍Language', callback_data='language'))
             bot.send_message(message.chat.id, language[language['cur_lang']]['view'].substitute(
                 all=f'({len(knots)})'), reply_markup=kb)
+            for el in encode.keys():
+                if el == 'camping':
+                    bot.send_message(message.chat.id, encode[el][f"type_{language['cur_lang']}"],
+                                     reply_markup=keyboard1)
+                if el == 'festmacher':
+                    bot.send_message(message.chat.id, encode[el][f"type_{language['cur_lang']}"])
+                kb1 = telebot.types.InlineKeyboardMarkup()
+                kb_button = telebot.types.InlineKeyboardButton(
+                    encode[el]['img'] + encode[el][f'name_{language["cur_lang"]}'], callback_data=el)
+                obj = alleknotentabelle.objects.filter(knoten_typ__startswith=el)[0]
+                img = Image.open(settings.BASE_DIR / f"images/{obj.knotenbild2d[5:-8]}title.png").convert("RGB")
+                img = ImageOps.invert(img)
+                enhancer = ImageEnhance.Sharpness(img)
+                enhancer = ImageEnhance.Contrast(enhancer.enhance(1.5))
+                enhancer = ImageEnhance.Brightness(enhancer.enhance(1.5))
+                img = enhancer.enhance(0.9)
+                img = img.convert("RGBA")
+                if buf is not None:
+                    if fl:
+                        two_in_one = Image.new("RGBA", (244*2, 244))
+                        two_in_one.paste(img, (0, 0))
+                        two_in_one.paste(img_buf, (244, 0))
+                        kb1.row(kb_button, buf)
+                        bot.send_photo(message.chat.id, two_in_one, reply_markup=kb1)
+                elif fl:
+                    kb1.row(kb_button)
+                    bot.send_photo(message.chat.id, img, reply_markup=kb1)
+                img_buf = img
+                buf = kb_button
+                fl = not fl
 
         @bot.message_handler(commands=['language'])
         def lang(message):
@@ -545,43 +565,160 @@ class Command(BaseCommand):
             if callback_query.data in language:
                 language.update({"cur_lang": callback_query.data})
                 bot.send_message(callback_query.from_user.id, "Language changed", reply_markup=keyboard1)
-                return
-            elif callback_query.data[0] == 's':
+                start()
+            elif callback_query.data == 'language':
+                bot.send_message(callback_query.from_user.id, "Choose language:", reply_markup=inline_kb1)
+            elif callback_query.data == 'favorite':
+                language['stage'] = 'fav'
+                knots = alleknotentabelle.objects.filter(id__in=Favorite.objects.filter
+                                                         (usr=callback_query.from_user.id).values('knot'))
+                buf = None
+                img_buf = None
+                if len(knots) % 2 == 0:
+                    fl = False
+                else:
+                    fl = True
+                bot.send_message(callback_query.from_user.id, "Favorite:")
+                for el in knots:
+                    kb = telebot.types.InlineKeyboardMarkup()
+                    kb_button = telebot.types.InlineKeyboardButton(
+                        f'{str(eval("el.knotenname_" + language["cur_lang"]).split("_")[0])}',
+                        callback_data=str(el.id))
+                    img = Image.open(
+                        settings.BASE_DIR / f"images/{el.knotenbild2d[5:-8]}title.png").convert("RGB")
+                    img = ImageOps.invert(img)
+                    enhancer = ImageEnhance.Sharpness(img)
+                    enhancer = ImageEnhance.Contrast(enhancer.enhance(1.5))
+                    enhancer = ImageEnhance.Brightness(enhancer.enhance(1.5))
+                    img = enhancer.enhance(0.9)
+                    img = img.convert("RGBA")
+                    if buf is not None:
+                        if fl:
+                            two_in_one = Image.new("RGBA", (244 * 2, 244))
+                            two_in_one.paste(img, (0, 0))
+                            two_in_one.paste(img_buf, (244, 0))
+                            kb.row(kb_button, buf)
+                            bot.send_photo(callback_query.from_user.id, two_in_one, reply_markup=kb)
+                    elif fl:
+                        kb.row(kb_button)
+                        bot.send_photo(callback_query.from_user.id, img, reply_markup=kb)
+                    buf = kb_button
+                    img_buf = img
+                    fl = not fl
+            elif callback_query.data == 'all':
+                knots = alleknotentabelle.objects.all()
+                buf = None
+                img_buf = None
+                if len(knots) % 2 == 0:
+                    fl = False
+                else:
+                    fl = True
+                bot.send_message(callback_query.from_user.id, 'All:')
+                for el in knots:
+                    kb = telebot.types.InlineKeyboardMarkup()
+                    kb_button = telebot.types.InlineKeyboardButton(
+                        f'{str(eval("el.knotenname_" + language["cur_lang"]).split("_")[0])}',
+                        callback_data=str(el.id))
+                    img = Image.open(
+                        settings.BASE_DIR / f"images/{el.knotenbild2d[5:-8]}title.png").convert("RGB")
+                    img = ImageOps.invert(img)
+                    enhancer = ImageEnhance.Sharpness(img)
+                    enhancer = ImageEnhance.Contrast(enhancer.enhance(1.5))
+                    enhancer = ImageEnhance.Brightness(enhancer.enhance(1.5))
+                    img = enhancer.enhance(0.9)
+                    img = img.convert("RGBA")
+                    if buf is not None:
+                        if fl:
+                            two_in_one = Image.new("RGBA", (244 * 2, 244))
+                            two_in_one.paste(img, (0, 0))
+                            two_in_one.paste(img_buf, (244, 0))
+                            kb.row(kb_button, buf)
+                            bot.send_photo(callback_query.from_user.id, two_in_one, reply_markup=kb)
+                    elif fl:
+                        kb.row(kb_button)
+                        bot.send_photo(callback_query.from_user.id, img, reply_markup=kb)
+                    buf = kb_button
+                    img_buf = img
+                    fl = not fl
+            elif callback_query.data[0] == '!':
                 k = alleknotentabelle.objects.get(id=int(callback_query.data[1:]))
                 obj = Favorite.objects.create(usr=callback_query.from_user.id, knot=k)
                 obj.save()
                 bot.send_message(callback_query.from_user.id, "Added to favorite")
-            elif callback_query.data[0] == 'r':
+            elif callback_query.data[0] == '?':
                 k = alleknotentabelle.objects.get(id=int(callback_query.data[1:]))
-                obj = Favorite.objects.filter(usr=callback_query.from_user.id, knot=k).delete()
-                obj.save()
+                Favorite.objects.filter(usr=callback_query.from_user.id, knot=k).delete()
                 bot.send_message(callback_query.from_user.id, "Removed from favorite")
             else:
-                kb1 = telebot.types.InlineKeyboardMarkup()
-                obj = alleknotentabelle.objects.get(id=int(callback_query.data))
-                if Favorite.objects.filter(usr=callback_query.from_user.id, knot=obj).exists():
-                    kb_button = telebot.types.InlineKeyboardButton("⭐Delete from Favorite", callback_data=f'r{callback_query.data}')
+                if callback_query.data.isdigit():
+                    language['stage'] = 'obj'
+                    kb1 = telebot.types.InlineKeyboardMarkup()
+                    obj = alleknotentabelle.objects.get(id=int(callback_query.data))
+                    if Favorite.objects.filter(usr=callback_query.from_user.id, knot=obj).exists():
+                        kb_button = telebot.types.InlineKeyboardButton("⭐Delete from Favorite",
+                                                                       callback_data=f'?{callback_query.data}')
+                    else:
+                        kb_button = telebot.types.InlineKeyboardButton("⭐Add to Favorite",
+                                                                       callback_data=f'!{callback_query.data}')
+                    kb1.row(kb_button)
+                    categories = [el for el in obj.knoten_typ.split("_")]
+                    img = Image.open(settings.BASE_DIR / f"images/{obj.knotenbild2d[5:-8]}title.png").convert("RGB")
+                    img = ImageOps.invert(img)
+                    enhancer = ImageEnhance.Sharpness(img)
+                    enhancer = ImageEnhance.Contrast(enhancer.enhance(1.5))
+                    enhancer = ImageEnhance.Brightness(enhancer.enhance(1.5))
+                    img = enhancer.enhance(0.9)
+                    img = img.convert("RGBA")
+                    bot.send_photo(callback_query.from_user.id, img,
+                                   caption=language[language['cur_lang']]['knot'].substitute(
+                                       knot_name=str(eval(f'obj.knotenname_{language["cur_lang"]}').split('_')[0]),
+                                       description=eval(f'obj.knotenbeschreibung_{language["cur_lang"]}'),
+                                       abok=obj.knoten_abok,
+                                       names="\n".join(
+                                           [str("--" + el) for el in
+                                            eval(f'obj.knotenname_{language["cur_lang"]}').split("_")]),
+                                       strength=obj.knotenfestigkeit,
+                                       categories="\n".join(
+                                           [str("--" + encode[el][f"name_{language['cur_lang']}"]) for el in
+                                            categories]),
+                                       id=int(callback_query.data)), reply_markup=kb1)
                 else:
-                    kb_button = telebot.types.InlineKeyboardButton("⭐Add to Favorite",
-                                                                   callback_data=f's{callback_query.data}')
-                kb1.row(kb_button)
-                categories = [el for el in obj.knoten_typ.split("_")]
-                img = Image.open(settings.BASE_DIR / f"images/{obj.knotenbild2d[5:-8]}title.png").convert("RGB")
-                img = ImageOps.invert(img)
-                enhancer = ImageEnhance.Sharpness(img)
-                enhancer = ImageEnhance.Contrast(enhancer.enhance(1.5))
-                enhancer = ImageEnhance.Brightness(enhancer.enhance(1.5))
-                img = enhancer.enhance(0.9)
-                img = img.convert("RGBA")
-                bot.send_photo(callback_query.from_user.id, img, caption=language[language['cur_lang']]['knot'].substitute(
-                    knot_name=str(eval(f'obj.knotenname_{language["cur_lang"]}').split('_')[0]),
-                    description=eval(f'obj.knotenbeschreibung_{language["cur_lang"]}'),
-                    abok=obj.knoten_abok,
-                    names="\n".join(
-                        [str("--" + el) for el in eval(f'obj.knotenname_{language["cur_lang"]}').split("_")]),
-                    strength=obj.knotenfestigkeit,
-                    categories="\n".join([str("--" + encode[el][f"name_{language['cur_lang']}"]) for el in categories]),
-                    id=int(callback_query.data)), reply_markup=kb1)
+                    language['stage'] = 'cat'
+                    knots = alleknotentabelle.objects.filter(knoten_typ__startswith=callback_query.data)
+                    buf = None
+                    img_buf = None
+                    if len(knots) % 2 == 0:
+                        fl = False
+                    else:
+                        fl = True
+                    bot.send_message(callback_query.from_user.id, language[language['cur_lang']]['view_category'].substitute(
+                        category_name=encode[callback_query.data][f"name_{language['cur_lang']}"]))
+                    for el in knots:
+                        kb = telebot.types.InlineKeyboardMarkup()
+                        kb_button = telebot.types.InlineKeyboardButton(
+                            f'{str(eval("el.knotenname_" + language["cur_lang"]).split("_")[0])}',
+                            callback_data=str(el.id))
+                        img = Image.open(
+                            settings.BASE_DIR / f"images/{el.knotenbild2d[5:-8]}title.png").convert("RGB")
+                        img = ImageOps.invert(img)
+                        enhancer = ImageEnhance.Sharpness(img)
+                        enhancer = ImageEnhance.Contrast(enhancer.enhance(1.5))
+                        enhancer = ImageEnhance.Brightness(enhancer.enhance(1.5))
+                        img = enhancer.enhance(0.9)
+                        img = img.convert("RGBA")
+                        if buf is not None:
+                            if fl:
+                                two_in_one = Image.new("RGBA", (244 * 2, 244))
+                                two_in_one.paste(img, (0, 0))
+                                two_in_one.paste(img_buf, (244, 0))
+                                kb.row(kb_button, buf)
+                                bot.send_photo(callback_query.from_user.id, two_in_one, reply_markup=kb)
+                        elif fl:
+                            kb.row(kb_button)
+                            bot.send_photo(callback_query.from_user.id, img, reply_markup=kb)
+                        buf = kb_button
+                        img_buf = img
+                        fl = not fl
 
         @bot.message_handler(commands=all_types())
         def view(message):
@@ -673,6 +810,11 @@ class Command(BaseCommand):
 
         @bot.message_handler(content_types=['text'])
         def view_all(message):
+            if message.text == '🔙':
+                if language['stage'] == 'menu':
+                    return
+                else:
+                    start(message)
             if message.text[2:] == 'View':
                 knots = alleknotentabelle.objects.all()
                 kb = telebot.types.ReplyKeyboardMarkup()
@@ -808,7 +950,5 @@ class Command(BaseCommand):
                         buf = kb_button
                         img_buf = img
                         fl = not fl
-                else:
-                    bot.send_message(message.chat.id, "Opps, something went wrong")
 
         bot.polling()
