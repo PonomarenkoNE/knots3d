@@ -46,3 +46,13 @@ class alleknotentabelle(models.Model):
     class Meta():
         verbose_name = "Knot"
         verbose_name_plural = "Knots"
+
+
+class Favorite(models.Model):
+
+    usr = models.TextField()
+    knot = models.ForeignKey(alleknotentabelle, on_delete=models.CASCADE)
+
+    class Meta():
+        verbose_name = "Favorite"
+        verbose_name_plural = verbose_name
