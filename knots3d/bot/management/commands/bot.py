@@ -34,7 +34,8 @@ encode = {
         'name_ja': 'キャンプ',
         'name_vi': 'Cắm trại',
         'name_pt': 'Acampamento',
-        'name_ko': '캠핑'
+        'name_ko': '캠핑',
+        'img': '⛺'
     },
     'boot': {
         'type_eng': 'Kind',
@@ -60,7 +61,8 @@ encode = {
         'name_ja': '船乗り',
         'name_vi': 'Đi biển',
         'name_pt': 'Marítimo',
-        'name_ko': '항해'
+        'name_ko': '항해',
+        'img': '⚓'
     },
     'verschieden': {
         'type_eng': 'Kind',
@@ -86,7 +88,8 @@ encode = {
         'name_ja': 'その他',
         'name_vi': 'Điều khoản khác',
         'name_pt': 'Diversos',
-        'name_ko': '여러 가지 잡다한'
+        'name_ko': '여러 가지 잡다한',
+        'img': '🛠'
     },
     'kletter': {
         'type_eng': 'Kind',
@@ -112,7 +115,8 @@ encode = {
         'name_ja': 'クライミング',
         'name_vi': 'Leo',
         'name_pt': 'Escalando',
-        'name_ko': '등반'
+        'name_ko': '등반',
+        'img': '🏔'
     },
     'feuerwehr': {
         'type_eng': 'Kind',
@@ -138,7 +142,8 @@ encode = {
         'name_ja': '消防+救助',
         'name_vi': 'Cứu hỏa + Cứu hộ',
         'name_pt': 'Fogo + Resgate',
-        'name_ko': '화재 + 구조'
+        'name_ko': '화재 + 구조',
+        'img': '🔥'
     },
     'angeln': {
         'type_eng': 'Kind',
@@ -164,7 +169,8 @@ encode = {
         'name_ja': '釣り',
         'name_vi': 'Đánh bắt cá',
         'name_pt': 'pescaria',
-        'name_ko': '어업'
+        'name_ko': '어업',
+        'img': '🎣'
     },
     'hilfe': {
         'type_eng': 'Kind',
@@ -190,7 +196,8 @@ encode = {
         'name_ja': '応急処置',
         'name_vi': 'Sơ cứu',
         'name_pt': 'Primeiro socorro',
-        'name_ko': '응급 처치'
+        'name_ko': '응급 처치',
+        'img': '⛑'
     },
     'pfadfinder': {
         'type_eng': 'Kind',
@@ -216,7 +223,8 @@ encode = {
         'name_ja': 'スカウト',
         'name_vi': 'Hướng đạo',
         'name_pt': 'Escotismo',
-        'name_ko': '정찰 활동'
+        'name_ko': '정찰 활동',
+        'img': '⛺'
     },
     'deko': {
         'type_eng': 'Kind',
@@ -242,7 +250,8 @@ encode = {
         'name_ja': '装飾',
         'name_vi': 'Trang trí',
         'name_pt': 'Decorativo',
-        'name_ko': '장식'
+        'name_ko': '장식',
+        'img': '🎉'
     },
     'festmacher': {
         'type_eng': 'Type',
@@ -268,7 +277,8 @@ encode = {
         'name_ja': 'ヒッチ',
         'name_vi': 'Chó cái',
         'name_pt': 'Hitches',
-        'name_ko': '히치'
+        'name_ko': '히치',
+        'img': '🔗'
     },
     'schlaufe': {
         'type_eng': 'Type',
@@ -294,7 +304,8 @@ encode = {
         'name_ja': 'ループ',
         'name_vi': 'Vòng lặp',
         'name_pt': 'rotações',
-        'name_ko': '루프'
+        'name_ko': '루프',
+        'img': '➰'
     },
     'stop': {
         'type_eng': 'Type',
@@ -320,7 +331,8 @@ encode = {
         'name_ja': 'ストッパーの',
         'name_vi': 'Nút chặn',
         'name_pt': 'Stopper`s',
-        'name_ko': '스토퍼'
+        'name_ko': '스토퍼',
+        'img': '🛑'
     },
     'verbinder': {
         'type_eng': 'Type',
@@ -346,7 +358,8 @@ encode = {
         'name_ja': 'ベンド',
         'name_vi': 'Uốn cong',
         'name_pt': 'Curvas',
-        'name_ko': '벤드'
+        'name_ko': '벤드',
+        'img': '➿'
     },
     'spezi': {
         'type_eng': 'Type',
@@ -372,7 +385,8 @@ encode = {
         'name_ja': '特殊な',
         'name_vi': 'Đặc biệt',
         'name_pt': 'Especial',
-        'name_ko': '특별한'
+        'name_ko': '특별한',
+        'img': '❌'
     },
     'buende': {
         'type_eng': 'Type',
@@ -398,62 +412,63 @@ encode = {
         'name_ja': '製本',
         'name_vi': 'Ràng buộc',
         'name_pt': 'Vinculativo',
-        'name_ko': '제본'
+        'name_ko': '제본',
+        'img': '🖇'
     },
 }
 
 language = {
     'eng': {
-        'view': Template('Full list:\nAll knots $all\n\nCategory:\n$category'),
-        'view_category': Template('$category_name\n\n$knots'),
+        'view': Template('Full list:\nAll knots $all\n\nCategories:'),
+        'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nDescription:\n$description\n\nABOK: $abok\n\nAlso known as: \n$names\n\n'
                          'Breaking strength: $strength\n\n'
                          'Categories: \n$categories\n\n'
                          'More information on: https://knots.exyte.top/knot_id_$id')
     },
     'de': {
-        'view': Template('Volle Liste:\nAlle Knoten $all\n\nKategorie:\n$category'),
-        'view_category': Template('$category_name\n\n$knots'),
+        'view': Template('Volle Liste:\nAlle Knoten $all\n\nKategorie:'),
+        'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nBeschreibung:\n$description\n\nABOK: $abok\n\nAuch bekannt als: \n$names\n\n'
                          'Bruchfestigkeit: $strength\n\n'
                          'Kategorie: \n$categories\n\n'
                          'Weitere Informationen zu: https://knots.exyte.top/knot_id_$id')
     },
     'ru':{
-        'view': Template('Полный список:\nВсе узлы $all\n\nКатегории:\n$category'),
-        'view_category': Template('$category_name\n\n$knots'),
+        'view': Template('Полный список:\nВсе узлы $all\n\nКатегории:'),
+        'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nОписание:\n$description\n\nABOK: $abok\n\nТакже извесно как: \n$names\n\n'
                          'Прочность на разрыв: $strength\n\n'
                          'Категории: \n$categories\n\n'
                          'Чтобы унать больше: https://knots.exyte.top/knot_id_$id')
     },
     'esp': {
-        'view': Template('Lista llena:\nTodos los nudos $all\n\nCategoría:\n$category'),
-        'view_category': Template('$category_name\n\n$knots'),
+        'view': Template('Lista llena:\nTodos los nudos $all\n\nCategoría:'),
+        'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nDescripción:\n$description\n\nABOK: $abok\n\nTambién conocido como: \n$names\n\n'
                          'Rompiendo la fuerza: $strength\n\n'
                          'Categoría: \n$categories\n\n'
                          'Más información sobre: https://knots.exyte.top/knot_id_$id')
     },
     'fr': {
-        'view': Template('Liste complète:\nTous les nœuds $all\n\nCatégorie:\n$category'),
-        'view_category': Template('$category_name\n\n$knots'),
+        'view': Template('Liste complète:\nTous les nœuds $all\n\nCatégories:'),
+        'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nDescription:\n$description\n\nABOK: $abok\n\nAussi connu sous le nom: \n$names\n\n'
                          'Résistance à la rupture: $strength\n\n'
                          'Catégories: \n$categories\n\n'
                          'Plus d`informations sur: https://knots.exyte.top/knot_id_$id')
     },
     'it': {
-        'view': Template('Lista completa:\nTutti i nodi $all\n\nCategoria:\n$category'),
-        'view_category': Template('$category_name\n\n$knots'),
+        'view': Template('Lista completa:\nTutti i nodi $all\n\nCategoria:'),
+        'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nDescrizione:\n$description\n\nABOK: $abok\n\nConosciuto anche come: \n$names\n\n'
                          'Forza di rottura: $strength\n\n'
                          'Categoria: \n$categories\n\n'
                          'Maggiori informazioni su: https://knots.exyte.top/knot_id_$id')
     },
     'tuek': {
-        'view': Template('Tam liste:\nTüm düğümler $all\n\nKategori:\n$category'),
-        'view_category': Template('$category_name\n\n$knots'),
+        'view': Template('Tam liste:\nTüm düğümler $all\n\nKategori:'),
+        'view_category': Template('$category_name'),
         'knot': Template('$knot_name\n\nAçıklama:\n$description\n\nABOK: $abok\n\nAyrıca şöyle bilinir: \n$names\n\n'
                          'Kırılma gücü: $strength\n\n'
                          'Kategori: \n$categories\n\n'
@@ -484,7 +499,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         bot = telebot.TeleBot('1592562907:AAGdFFwaQ2f6QotTEuWeYFs3PohgsEHvuiE')
         keyboard1 = telebot.types.ReplyKeyboardMarkup(True, True)
-        keyboard1.row('/view', '/language')
+        keyboard1.row('👁️View', '🌍Language')
 
         inline_btn_1 = telebot.types.InlineKeyboardButton('English', callback_data='eng')
         inline_btn_2 = telebot.types.InlineKeyboardButton('Deutish', callback_data='de')
@@ -511,9 +526,29 @@ class Command(BaseCommand):
 
         @bot.callback_query_handler(func=lambda c: c.data)
         def process_callback(callback_query: telebot.types.CallbackQuery):
-            language.update({"cur_lang": callback_query.data})
-            bot.send_message(callback_query.from_user.id, "Language changed", reply_markup=keyboard1)
-            return
+            if callback_query.data in language:
+                language.update({"cur_lang": callback_query.data})
+                bot.send_message(callback_query.from_user.id, "Language changed", reply_markup=keyboard1)
+                return
+            else:
+                obj = alleknotentabelle.objects.get(id=int(callback_query.data))
+                categories = [el for el in obj.knoten_typ.split("_")]
+                img = Image.open(settings.BASE_DIR / f"images/{obj.knotenbild2d[5:-8]}title.png").convert("RGB")
+                img = ImageOps.invert(img)
+                enhancer = ImageEnhance.Sharpness(img)
+                enhancer = ImageEnhance.Contrast(enhancer.enhance(1.5))
+                enhancer = ImageEnhance.Brightness(enhancer.enhance(1.5))
+                img = enhancer.enhance(0.9)
+                img = img.convert("RGBA")
+                bot.send_photo(callback_query.from_user.id, img, caption=language[language['cur_lang']]['knot'].substitute(
+                    knot_name=eval(f'obj.knotenname_{language["cur_lang"]}'),
+                    description=eval(f'obj.knotenbeschreibung_{language["cur_lang"]}'),
+                    abok=obj.knoten_abok,
+                    names="\n".join(
+                        [str("--" + el) for el in eval(f'obj.knotenname_{language["cur_lang"]}').split("_")]),
+                    strength=obj.knotenfestigkeit,
+                    categories="\n".join([str("--" + encode[el][f"name_{language['cur_lang']}"]) for el in categories]),
+                    id=int(callback_query.data)))
 
         @bot.message_handler(commands=all_types())
         def view(message):
@@ -521,11 +556,21 @@ class Command(BaseCommand):
             enter = '\n'
             if len(parsing) == 1:
                 knots = alleknotentabelle.objects.all()
+                kb = telebot.types.ReplyKeyboardMarkup()
+                buf = None
+                fl = True
+                for el in encode.keys():
+                    kb_button = telebot.types.KeyboardButton(encode[el]['img']+encode[el][f'name_{language["cur_lang"]}'])
+                    if buf is not None:
+                        if fl:
+                            kb.row(kb_button, buf)
+                    else:
+                        kb.row(kb_button)
+                    buf = kb_button
+                    fl = not fl
+                kb.row('👁️View', '🌍Language')
                 bot.send_message(message.chat.id, language[language['cur_lang']]['view'].substitute(
-                    all={len(knots)},
-                    category="\n".join([str(encode[el][f"name_{language['cur_lang']}"] + f" (/view_{el})")
-                                       for el in encode.keys()]))
-                                , reply_markup=keyboard1)
+                    all=f'({len(knots)})'), reply_markup=kb)
             elif parsing[1] == 'all':
                 knots = alleknotentabelle.objects.all()
                 knots_dict = dict()
@@ -535,19 +580,29 @@ class Command(BaseCommand):
                                                                         f'{language["cur_lang"]}').split('_')))})
                 bot.send_message(message.chat.id, f'All:\n\n')
                 for el in knots_dict.keys():
-                    bot.send_message(message.chat.id, f'{str(knots_dict[el] + f"(type /knot_{el} - see info about knot)")}')
+                    bot.send_message(message.chat.id,
+                                     f'{str(knots_dict[el] + f"(type /knot_{el} - see info about knot)")}')
             elif len(parsing) == 2:
-                knots = alleknotentabelle.objects.filter(knoten_typ__startswith=parsing[1])
-                knots_dict = dict()
-                for el in knots:
-                    knots_dict.update({str(el.id): str(' or '.join(i for i in
-                                                                   eval(f'el.knotenname_'
-                                                                        f'{language["cur_lang"]}').split('_')))})
+                knots = alleknotentabelle.objects.filter(knoten_typ__startswith=res)
+                buf1 = None
+                buf2 = None
+                fl = 0
                 bot.send_message(message.chat.id, language[language['cur_lang']]['view_category'].substitute(
-                    category_name=encode[parsing[1]][f"name_{language['cur_lang']}"],
-                    knots="\n".join(str(knots_dict[el] + f"(/knot_{el})")
-                                      for el in knots_dict.keys())
-                ), reply_markup=keyboard1)
+                    category_name=encode[res][f"name_{language['cur_lang']}"]))
+                for el in knots:
+                    kb = telebot.types.InlineKeyboardMarkup()
+                    kb_button = telebot.types.InlineKeyboardButton(
+                        f'{str(eval("el.knotenname_" + language["cur_lang"]).split("_")[0])}',
+                        callback_data=f'{str(el.id)}')
+                    kb.add(kb_button)
+                    img = Image.open(settings.BASE_DIR / f"images/{el.knotenbild2d[5:-8]}title.png").convert("RGB")
+                    img = ImageOps.invert(img)
+                    enhancer = ImageEnhance.Sharpness(img)
+                    enhancer = ImageEnhance.Contrast(enhancer.enhance(1.5))
+                    enhancer = ImageEnhance.Brightness(enhancer.enhance(1.5))
+                    img = enhancer.enhance(0.9)
+                    img = img.convert("RGBA")
+                    bot.send_photo(message.chat.id, img, reply_markup=kb)
             else:
                 bot.send_message(message.chat.id, "No such category or type")
 
@@ -569,9 +624,81 @@ class Command(BaseCommand):
                     knot_name=eval(f'obj.knotenname_{language["cur_lang"]}'),
                     description=eval(f'obj.knotenbeschreibung_{language["cur_lang"]}'),
                     abok=obj.knoten_abok,
-                    names="\n".join([str("--"+el) for el in eval(f'obj.knotenname_{language["cur_lang"]}').split("_")]),
+                    names="\n".join(
+                        [str("--" + el) for el in eval(f'obj.knotenname_{language["cur_lang"]}').split("_")]),
                     strength=obj.knotenfestigkeit,
-                    categories="\n".join([str("--"+encode[el][f"name_{language['cur_lang']}"]) for el in categories]),
+                    categories="\n".join([str("--" + encode[el][f"name_{language['cur_lang']}"]) for el in categories]),
                     id=int(parsing[1])))
+            else:
+                bot.send_message(message.chat.id, "Opps, something went wrong")
+
+        @bot.message_handler(content_types=['text'])
+        def view_all(message):
+            if message.text[2:] == 'View':
+                knots = alleknotentabelle.objects.all()
+                kb = telebot.types.ReplyKeyboardMarkup()
+                buf1 = None
+                buf2 = None
+                fl = 0
+                for el in encode.keys():
+                    kb_button = telebot.types.KeyboardButton(encode[el]['img']+encode[el][f'name_{language["cur_lang"]}'])
+                    if buf1 is not None and buf2 is not None:
+                        if fl == 2:
+                            kb.row(kb_button, buf1, buf2)
+                            fl = 0
+                            buf2 = buf1
+                            buf1 = kb_button
+                            continue
+                    buf2 = buf1
+                    buf1 = kb_button
+                    fl += 1
+                kb.row('👁️View', '🌍Language')
+                bot.send_message(message.chat.id, language[language['cur_lang']]['view'].substitute(
+                    all=f'({len(knots)})'), reply_markup=kb)
+            elif message.text[1:] == 'Language':
+                bot.send_message(message.chat.id, "Choose language:", reply_markup=inline_kb1)
+            else:
+                category = message.text[1:]
+                res = None
+                for el in encode.keys():
+                    if encode[el][f'name_{language["cur_lang"]}'] == category:
+                        res = el
+                if res is not None:
+                    knots = alleknotentabelle.objects.filter(knoten_typ__startswith=res)
+                    buf = None
+                    img_buf = None
+                    if len(knots) % 2 == 0:
+                        fl = False
+                    else:
+                        fl = True
+                    bot.send_message(message.chat.id, language[language['cur_lang']]['view_category'].substitute(
+                        category_name=encode[res][f"name_{language['cur_lang']}"]))
+                    for el in knots:
+                        kb = telebot.types.InlineKeyboardMarkup()
+                        kb_button = telebot.types.InlineKeyboardButton(f'{str(eval("el.knotenname_" + language["cur_lang"]).split("_")[0])}',
+                                                                       callback_data=str(el.id))
+                        img = Image.open(
+                            settings.BASE_DIR / f"images/{el.knotenbild2d[5:-8]}title.png").convert("RGB")
+                        img = ImageOps.invert(img)
+                        enhancer = ImageEnhance.Sharpness(img)
+                        enhancer = ImageEnhance.Contrast(enhancer.enhance(1.5))
+                        enhancer = ImageEnhance.Brightness(enhancer.enhance(1.5))
+                        img = enhancer.enhance(0.9)
+                        img = img.convert("RGBA")
+                        if buf is not None:
+                            if fl:
+                                two_in_one = Image.new("RGBA", (244*2, 244))
+                                two_in_one.paste(img, (0,0))
+                                two_in_one.paste(img_buf, (244, 0))
+                                kb.row(kb_button, buf)
+                                bot.send_photo(message.chat.id, two_in_one, reply_markup=kb)
+                        elif fl:
+                            kb.row(kb_button)
+                            bot.send_photo(message.chat.id, img, reply_markup=kb)
+                        buf = kb_button
+                        img_buf = img
+                        fl = not fl
+                else:
+                    bot.send_message(message.chat.id, "Opps, something went wrong")
 
         bot.polling()
